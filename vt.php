@@ -575,15 +575,19 @@ $cursor->sort(array("date" => -1));
   {
     print "<th data-field='crits' data-sortable='true'>CRITS</th>";
   }?>
+  <? if($misp_on == "true")
+  {
+    print "<th data-field='misp' data-sortable='true'>MISP</th>";
+  }?>
   <th data-field="seen" data-sortable="true">First Seen</th>
   <th data-field="av" data-sortable="true" data-sorter="idSorter" data-sort-name="_av_data">AV</th>
   <? if($av_multiple == "true")
   {
-      print "<th data-field="av_vendor" data-sortable="true">AV Description</th>"
+      print "<th data-field='av_vendor' data-sortable='true'>AV Description</th>";
   }
   else
   {
-      print "<th data-field="av_vendor" data-sortable="true">" . $av_vendor . "</th>"
+      print "<th data-field='av_vendor' data-sortable='true'>" . $av_vendor . "</th>";
   }?>
   <th data-field="size" data-sortable="true">Size</th>
   <th data-field="Type" data-sortable="true">Type</th>
