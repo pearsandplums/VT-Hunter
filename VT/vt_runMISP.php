@@ -25,7 +25,7 @@ if($misp_on == "true")
         ));
         $url = $misp_url . "/events/restSearch/download";
         $result2 = @file_get_contents($url, true, $context);
-        if ($theresult2 != false){
+        if ($result2 != false){
             $thejson = json_decode($result2, true);
             if (is_array($thejson) && array_key_exists('response',$thejson)){
                 $jsoncount = count($thejson['response']);
