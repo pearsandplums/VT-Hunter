@@ -530,7 +530,7 @@ $cursor = $collection->find($archQuery);
 $cursor->sort(array("date" => -1));
 ?>
 <div class="btn-group">
-<button class="btn btn-info" type="button">Alerts <span class="badge"><?print $cursor->count();?></span></button>
+  <button class="btn btn-info" type="button">Alerts <span class="badge"><?print $cursor->count();?></span></button>
 </div>
 
 <div class="btn-group">
@@ -541,8 +541,9 @@ $cursor->sort(array("date" => -1));
   </ul>
 </div>
 
-<button type='button' class='btn btn-danger' data-toggle='tooltip' data-placement='top' title='Delete from DB' onclick="confirmDel('Delete')">Delete</button>
-
+<div class="btn-group">
+  <button type='button' class='btn btn-danger' data-toggle='tooltip' data-placement='top' title='Delete from DB' onclick="confirmDel('Delete')">Delete</button>
+</div>
 <div class="btn-group">
   <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings<span class="caret"></span>
   </button>
