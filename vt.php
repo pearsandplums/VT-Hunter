@@ -283,11 +283,35 @@ function confirmDel(title) {
     $('#scrap_mod').modal('show');
 }
 
+function confirmArch(title, archStatus) {
+    response = "Are you sure you want to " + archStatus + "?  <button type='button' class='btn btn-danger' onclick=\"archiveFunc('"+archStatus+"')\">YES</button>";
+    $("#modal-bod").html(response);
+    $("#modal-title").html(title);
+    $('#scrap_mod').modal('show');
+}
+
 function deleteFunc() {
     $("input:checkbox[name=selected]:checked").each(function(){
         id = $(this).val();
         //console.log(id);
         delFunc(id);
+    });
+    $('#scrap_mod').modal('hide');
+    location.reload();
+}
+
+function archiveFunc(archStatus) {
+    $("input:checkbox[name=selected]:checked").each(function(){
+        id = $(this).val();
+        //console.log(id);
+        if(archStatus=="Archive")
+        {
+            archFunc(id);
+        }
+        else
+        {
+            UnarchFunc(id)
+        }
     });
     $('#scrap_mod').modal('hide');
     location.reload();
@@ -494,10 +518,12 @@ catch ( MongoConnectionException $e )
 #Chec Archived Option
 if(isset($_GET['archive']) && $_GET['archive'] == 'true')
 {
+    $archStatus = "Unarchive";
     $archQuery = array('archive' => 'true');
 }
 else
 {
+    $archStatus = "Archive";
     $archQuery = array('archive' => null);
 }
 $cursor = $collection->find($archQuery);
@@ -515,7 +541,13 @@ $cursor->sort(array("date" => -1));
   </ul>
 </div>
 
+<div class="btn-group">
 <button type='button' class='btn btn-danger' data-toggle='tooltip' data-placement='top' title='Delete from DB' onclick="confirmDel('Delete')">Delete</button>
+</div>
+
+<div class="btn-group">
+<button type='button' class='btn btn-danger' data-toggle='tooltip' data-placement='top' title='<? echo $archStatus ?> Selected' onclick="confirmArch('Archive','<?echo $archStatus ?>')"><? echo $archStatus ?></button>
+</div>
 
 <div class="btn-group">
   <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings<span class="caret"></span>
@@ -671,3 +703,4 @@ foreach ($cursor as $array)
 </div> <!-- /container -->
 </body>
 </html>
+
