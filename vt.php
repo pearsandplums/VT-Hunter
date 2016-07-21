@@ -603,6 +603,7 @@ $cursor->sort(array("date" => -1));
 <tr>
   <th data-field="check" data-sortable="false"><input type="checkbox" onClick="toggle(this)"/> All<br/></th>
   <th data-field="num" data-sortable="true" data-sorter="idSorter" data-sort-name="_num_data">Details</th>
+  <th data-field="date" data-sortable="true">Date Alerted</th>
   <th data-field="set" data-sortable="true">Rule Set</th>
   <th data-field="rule" data-sortable="true">Rule</th>
   <th data-field="md5" data-sortable="true">MD5</th>
@@ -614,6 +615,7 @@ $cursor->sort(array("date" => -1));
   {
     print "<th data-field='misp' data-sortable='true'>MISP</th>";
   }?>
+  <th data-field="timestamp" data-sortable="true">Timestamp</th>
   <th data-field="seen" data-sortable="true">First Seen</th>
   <th data-field="av" data-sortable="true" data-sorter="idSorter" data-sort-name="_av_data">AV</th>
   <? if($av_multiple == "true")
@@ -644,6 +646,7 @@ foreach ($cursor as $array)
     }
     print "<td><input type='checkbox' name='selected' id='".$array['md5']."' value='".number_format($array['id'],0,'.','')."'/></td>";
     print "<td data-id='".$int."'><button type='button' class='btn btn-info btn-xs' data-toggle='tooltip' data-placement='top' title='Sample Details' onclick=\"launch_info_modal(".number_format($array['id'],0,'.','').",'Details')\">".$int."</button></td>";
+    print "<td>".$array['date']."</td>";
     print "<td><button type='button' class='btn btn-warning btn-xs' data-toggle='tooltip' data-placement='top' title='Yara Results' onclick=\"launch_yara_modal(".number_format($array['id'],0,'.','').",'Yara')\">".$array['ruleset_name']."</button></td>";
     print "<td>".$array['subject']."</td>";
     print "<td id='md5'><a href='https://www.virustotal.com/intelligence/search/?query=".$array['sha256']."' target='_blank'>".$array['md5']."</a></td>";
@@ -674,7 +677,15 @@ foreach ($cursor as $array)
       {
           if($array['misp'] == "true")
           {
-              print "<td>".$array['misp_event']."</td>";
+              print "<td>";
+              $mispArray = explode(',',$array['misp_event']);
+              $prefix = '';
+              foreach ($mispArray as $misp_event)
+              {
+                  $misp_event = str_replace(' ','',$misp_event);
+                  print $prefix."<a href='https://sig01.threatreveal.com/events/view/".$misp_event."'>".$misp_event."</a>";
+                  $prefix = ', ';
+              }
           }
           else
           {
@@ -688,6 +699,8 @@ foreach ($cursor as $array)
     }
 
     #AV Logic
+    $al_timestamp = str_replace(array('T','Z')," ",$array['timestamp']);
+    print "<td>" . $al_timestamp . "</td>";
     print "<td>".$array['first_seen']."</td>";
     if($array['positives'] == 0)
     {
